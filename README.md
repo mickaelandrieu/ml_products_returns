@@ -53,6 +53,12 @@ make up
 * MLflow => http://localhost:5000/
 * Luigi (à activer) => http://localhost:8082/
 
+### Screenshots
+
+![Image](https://github.com/user-attachments/assets/a65b8cd3-695e-44ce-8fd7-83f1cb98d657)
+![Image](https://github.com/user-attachments/assets/0ef52098-33f2-4143-b0fb-56f1b35bccad)
+![Image](https://github.com/user-attachments/assets/4265f066-a2a6-46f3-9e79-514d47a365f4)
+
 
 ## Installation via Windows (😭😭)
 
