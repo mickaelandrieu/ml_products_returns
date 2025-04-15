@@ -36,6 +36,44 @@ Une entreprise de e-commerce souhaite prédire la probabilité de retour d’un 
 | Typage                   | mypy                              |
 | Logs                     | loguru                            |
 
+## Installation/Execution via Docker
+
+1. Créer des credentials sur Kaggle, et obtenir des clés API.
+2. Créer le fichier `.env` à partir du fichier `.env.dist`
+
+Enfin :
+
+```
+make build
+make up
+```
+### Apps
+
+* Minio => http://localhost:9001/
+* MLflow => http://localhost:5000/
+* Luigi (à activer) => http://localhost:8082/
+
+
+## Installation via Windows (😭😭)
+
+### Prérequis système
+#### Python & gestion de projet
+
+* Python 3.12
+* Poetry pour gérer les dépendances
+
+#### Java
+
+* Java 21 recommandé
+
+>⚠️ Java 24 non supporté par Hadoop/Spark → UnsupportedOperationException: getSubject)
+
+Ajoute JAVA_HOME dans ton environnement :
+
+```
+$env:JAVA_HOME = "C:\Program Files\Java\jdk-21"
+$env:Path = "$env:JAVA_HOME\bin;$env:Path"
+```
 
 ### Minio
 
@@ -75,24 +113,7 @@ $env:PYSPARK_SUBMIT_ARGS="--conf spark.driver.extraJavaOptions=--add-opens=java.
 $env:JAVA_TOOL_OPTIONS="--enable-native-access=ALL-UNNAMED"
 ```
 
-### Prérequis système
-#### Python & gestion de projet
 
-* Python 3.12
-* Poetry pour gérer les dépendances
-
-#### Java
-
-* Java 21 recommandé
-
->⚠️ Java 24 non supporté par Hadoop/Spark → UnsupportedOperationException: getSubject)
-
-Ajoute JAVA_HOME dans ton environnement :
-
-```
-$env:JAVA_HOME = "C:\Program Files\Java\jdk-21"
-$env:Path = "$env:JAVA_HOME\bin;$env:Path"
-```
 
 ### Apache Spark & Hadoop
 #### Spark
