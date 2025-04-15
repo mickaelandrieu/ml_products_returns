@@ -1,0 +1,7 @@
+.idea/
+.pytest_cache/
+data/
+mlflow/
+.cache/
+.env
+__pycache__/

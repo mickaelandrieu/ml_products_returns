@@ -1,0 +1,50 @@
+[tool.poetry]
+name = "ml_products_returns"
+version = "0.1.0"
+description = "Industrialisation d'un modèle de machine learning en architecture hexagonale avec PySpark et Luigi"
+authors = ["Mickaël Andrieu <mickael.andrieu@solvolabs.com>"]
+license = "MIT"
+readme = "README.md"
+packages = [{ include = "ml_products_returns" }]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pyspark = "^3.5.0"
+luigi = "^3.4.0"
+scikit-learn = "^1.4.1"
+pandas = "^2.2.1"
+numpy = "^1.26.4"
+joblib = "^1.4.0"
+mlflow = "^2.21.3"
+loguru = "^0.7.3"
+minio = "^7.2.15"
+kagglehub = "^0.3.11"
+boto3 = "^1.37.34"
+setuptools = "^78.1.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.1.1"
+ruff = "^0.4.0"
+mypy = "^1.9.0"
+types-PyYAML = "^6.0.12.20240311"  # utile si tu charges des confs YAML
+ipykernel = "^6.29.4"
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+select = ["E", "F", "B", "I"]
+ignore = ["E501"]  # si tu veux ignorer les lignes trop longues
+
+[tool.mypy]
+python_version = "3.12"
+ignore_missing_imports = true
+strict = false
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+filterwarnings = [
+    'ignore:Support for class-based `config` is deprecated, use ConfigDict instead.',
+]
