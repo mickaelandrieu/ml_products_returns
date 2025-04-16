@@ -14,11 +14,12 @@ build:
 
 bash:
 	@echo "Connexion au container..."
+	ocker compose up -d
 	docker exec -it app bash
 
 run:
 	@echo "Lancement du pipeline..."
-	docker exec -it app poetry run python main.py
+	docker exec -it app poetry run python -m ml_products_returns.ports.inputs.tasks.execute_pipeline ExecutePipelineTask --local-scheduler
 
 logs:
 	@echo "Logs de l'application..."
@@ -26,4 +27,5 @@ logs:
 
 reinstall:
 	@echo "Réinstallation des dépendances Poetry..."
+	docker start app
 	docker exec -it app poetry install

@@ -6,4 +6,3 @@ if __name__ == "__main__":
     setup_logging()
     model_uri = run_training_pipeline()
     logger.success(f"Modèle entraîné et sauvegardé ici : {model_uri}")
-

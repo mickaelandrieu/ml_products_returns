@@ -1,10 +1,16 @@
+# IDE confs
 .idea/
 .vscode/
-data/
-!ml_products_returns/data/
+
+# For local docker configuration
+volumes/
+!volumes/.gitkeep
+
+
+.env
+
+# Caches
+__pycache__/
 .pytest_cache/
 .mypy_cache/
-mlflow/
 .cache/
-.env
-__pycache__/

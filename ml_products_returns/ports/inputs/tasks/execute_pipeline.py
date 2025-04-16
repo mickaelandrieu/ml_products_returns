@@ -4,7 +4,7 @@ from .clean_dataset_task import CleanDatasetTask
 from .prepare_features_task import PrepareFeaturesTask
 from .train_model_task import TrainModelTask
 
-class ModelPipeline(luigi.WrapperTask):
+class ExecutePipelineTask(luigi.WrapperTask):
     """Pipeline complet pour l'entraînement du modèle de prédiction des retours.
     
     Ce pipeline orchestre l'ensemble du processus :
@@ -26,4 +26,8 @@ class ModelPipeline(luigi.WrapperTask):
         yield FetchDatasetTask()
         yield CleanDatasetTask()
         yield PrepareFeaturesTask()
-        yield TrainModelTask() 
+        yield TrainModelTask()
+
+if __name__ == "__main__":
+    import sys
+    luigi.run()

@@ -5,32 +5,20 @@ services:
       dockerfile: Dockerfile.app
     container_name: app
     environment:
-      # MinIO config pour Spark
       MINIO_ENDPOINT: http://minio:9000
       MINIO_ACCESS_KEY: minio
       MINIO_SECRET_KEY: minio123
-
-      # Luigi
       AWS_ACCESS_KEY_ID: minio
       AWS_SECRET_ACCESS_KEY: minio123
       LUIGI_S3_ENDPOINT: http://minio:9000
-
-      # MLflow
       MLFLOW_TRACKING_URI: http://mlflow:5000
       MLFLOW_S3_ENDPOINT_URL: http://minio:9000
       MLFLOW_ARTIFACT_URI: s3://mlflow-artifacts
-
-      ## MLflow attend un dépôt Git
       GIT_PYTHON_REFRESH: quiet
-
-      # Spark / Java options pour compatibilité JDK >= 17
       PYSPARK_SUBMIT_ARGS: --conf spark.driver.extraJavaOptions=--add-opens=java.base/javax.security.auth=ALL-UNNAMED pyspark-shell
       JAVA_TOOL_OPTIONS: --enable-native-access=ALL-UNNAMED
-
-      # Kaggle
       KAGGLEHUB_CACHE_DIR: /app/.cache/kagglehub
       HOME: /app
-
     ports:
       - "4040-4050:4040-4050"
       - "8082:8082"
@@ -78,41 +66,60 @@ services:
       - minio_fs
     networks:
       - ml_pr_network
+
   loki:
-    image: grafana/loki:2.9.3
+    image: grafana/loki:2.9.14
     container_name: loki
     command: -config.file=/etc/loki/local-config.yaml
+    volumes:
+      - ./volumes/loki:/tmp/loki
+      - ./.docker/loki/config/loki-config.yaml:/etc/loki/local-config.yaml
     ports:
       - "3100:3100"
+    depends_on:
+      - minio_fs
+    healthcheck:
+      test: [ "CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:3100/ready || exit 1" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     networks:
       - ml_pr_network
 
   promtail:
-    image: grafana/promtail:2.9.3
+    image: grafana/promtail:2.9.14
     container_name: promtail
-    volumes:
-      - ./promtail-config.yaml:/etc/promtail/promtail.yaml
     command: -config.file=/etc/promtail/promtail.yaml
+    volumes:
+      - ./.docker/promtail/config/promtail-config.yaml:/etc/promtail/promtail.yaml
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /etc/machine-id:/etc/machine-id:ro
     depends_on:
       - loki
     networks:
       - ml_pr_network
 
   grafana:
-    image: grafana/grafana:10.2.3
+    image: grafana/grafana:11.5.3
     container_name: grafana
+    user: "0:0"
+    volumes:
+      - ./volumes/grafana:/var/lib/grafana
+      - ./.docker/grafana/provisioning:/etc/grafana/provisioning
     ports:
       - "3000:3000"
-    networks:
-      - ml_pr_network
+    environment:
+      - GF_SECURITY_ADMIN_USER=grafana
+      - GF_SECURITY_ADMIN_PASSWORD=grafana123
     depends_on:
       - loki
-    environment:
-      - GF_SECURITY_ADMIN_USER=admin
-      - GF_SECURITY_ADMIN_PASSWORD=admin
+    networks:
+      - ml_pr_network
 
 volumes:
   minio_data:
 
 networks:
   ml_pr_network:
+    driver: bridge

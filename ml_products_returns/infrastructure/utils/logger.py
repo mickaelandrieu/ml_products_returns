@@ -8,7 +8,7 @@ def setup_logging(log_level: str = "INFO") -> None:
     Args:
         log_level: Niveau de log (DEBUG, INFO, WARNING, ERROR, CRITICAL)
     """
-    logger.remove()  # Supprime les handlers existants
+    logger.remove()
 
     # Ajoute un handler JSON en STDOUT (pour Promtail)
     logger.add(
