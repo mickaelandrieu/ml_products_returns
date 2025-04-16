@@ -1,6 +1,9 @@
 .idea/
-.pytest_cache/
+.vscode/
 data/
+!ml_products_returns/data/
+.pytest_cache/
+.mypy_cache/
 mlflow/
 .cache/
 .env
